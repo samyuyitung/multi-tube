@@ -4,10 +4,10 @@ import Player from '../Player';
 let util = require('../../Util/FrameUtil')
 class Watch extends Component {
   render() {
-      let queryRegex = new RegExp('^\\?videos=([\\w|,]+)&?')
+      let queryRegex = new RegExp('^\\?videos=([\\w|,|-]+)&?')
       let cap = queryRegex.exec(this.props.location.search)
       let videoIds = cap[1].split(',')
-
+      console.log(videoIds)
     let frameSize = util.getOptimalPlayerSize(videoIds.length)
 
     let opts = {

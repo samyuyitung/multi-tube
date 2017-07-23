@@ -4,6 +4,7 @@ import './Home.css';
 import VideoList from '../VideoList';
 let util = require('../../Util/YoutubeUtil')
 
+
 class Home extends Component {
   constructor(props) {
         super(props);
@@ -34,11 +35,20 @@ class Home extends Component {
     if (this.state.videolist.length > 0) {
       var ids = []
       var query = "?videos="
+      var resolveCount = this.state.videolist.length
       this.state.videolist.map((item)=> {
-        ids.push(`${util.getVideoId(item)}`)
+        util.getVideoIds(item).then(
+          (items) => {
+            ids = ids.concat(items)
+            query += ids.join(',')
+            this.resolveWrapper(--resolveCount, query)
+          }, err => {})
       })
-      query += ids.join(',')
-      this.props.history.push(`watch${query}`)
+    }
+  }
+  resolveWrapper(count, query) {
+    if (count === 0) {
+          this.props.history.push(`watch${query}`)
     }
   }
 }

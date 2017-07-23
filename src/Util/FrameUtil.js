@@ -5,13 +5,10 @@ function mostSquare(num) {
 
     return {
         y: smaller,
-        x: smaller + (num % smaller)   
+        x: (num / smaller)   
     }
 }
-
 const util = {
-
-
     /**
      * Gets the best 16:9 ratio
      * @param {*} count 
