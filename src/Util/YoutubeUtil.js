@@ -5,7 +5,6 @@ const util = {
     },
     getVideoId(url) {
         const caps = regex.exec(url)
-        console.log(caps)
         if (caps && caps.length >= 2)
             return caps[1   ]
         return ""
