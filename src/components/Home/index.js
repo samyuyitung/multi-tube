@@ -28,15 +28,16 @@ class Home extends Component {
     this.setState({
       videolist: list
     })
-    console.log(this.state.videolist)
   }
 
   startButtonPressed() {
     if (this.state.videolist.length > 0) {
+      var ids = []
       var query = "?videos="
-      this.state.videolist.forEach((item)=> {
-        query += `${util.getVideoId(item)},`
+      this.state.videolist.map((item)=> {
+        ids.push(`${util.getVideoId(item)}`)
       })
+      query += ids.join(',')
       this.props.history.push(`watch${query}`)
     }
   }
