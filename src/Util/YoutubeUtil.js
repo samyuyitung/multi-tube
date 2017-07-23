@@ -1,13 +1,13 @@
 var request = require('request');
 
-const videoRegex = new RegExp("^https:\\/\\/www\\.youtube\\.com\\/watch\\?v=(\\w+)$")
-const playlistRegex = new RegExp("^https:\\/\\/www\\.youtube\\.com\\/playlist\\?list=(\\w+)$")
+const videoRegex = new RegExp("^https:\\/\\/www\\.youtube\\.com\\/watch\\?v=([\\w|-]+)$")
+const playlistRegex = new RegExp("^https:\\/\\/www\\.youtube\\.com\\/playlist\\?list=([\\w|-]+)$")
 
 const API_KEY = 'AIzaSyCNdAjur1fqSfMjKA4Yjpv4Ub1NJxQhcVQ'
 
 const getPlaylists = (playlistId) => new Promise((resolve, reject) => {
-    console.log(playlistId)
-    request(`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=PLB03EA9545DD188C3&key=${API_KEY}`, (error, response, bodyStr) => {
+    if (playlistId) {
+    request(`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=${playlistId}&key=${API_KEY}`, (error, response, bodyStr) => {
         if (error) {
             resolve([]);
         } else if (bodyStr) {
@@ -23,6 +23,9 @@ const getPlaylists = (playlistId) => new Promise((resolve, reject) => {
             }
         }
     }) 
+    } else {
+        reject()
+    }
 })
 
 const util = {

@@ -39,7 +39,6 @@ class Home extends Component {
       this.state.videolist.map((item)=> {
         util.getVideoIds(item).then(
           (items) => {
-            console.log(items)
             ids = ids.concat(items)
             query += ids.join(',')
             this.resolveWrapper(--resolveCount, query)
