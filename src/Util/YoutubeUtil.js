@@ -1,13 +1,56 @@
-const regex = new RegExp("^https:\\/\\/www\\.youtube\\.com\\/watch\\?v=(\\w+)$")
+var request = require('request');
+
+const videoRegex = new RegExp("^https:\\/\\/www\\.youtube\\.com\\/watch\\?v=(\\w+)$")
+const playlistRegex = new RegExp("^https:\\/\\/www\\.youtube\\.com\\/playlist\\?list=(\\w+)$")
+
+const API_KEY = 'AIzaSyCNdAjur1fqSfMjKA4Yjpv4Ub1NJxQhcVQ'
+
+const getPlaylists = (playlistId) => new Promise((resolve, reject) => {
+    console.log(playlistId)
+    request(`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=PLB03EA9545DD188C3&key=${API_KEY}`, (error, response, bodyStr) => {
+        if (error) {
+            resolve([]);
+        } else if (bodyStr) {
+           const vids = []
+           const body = JSON.parse(bodyStr);
+            if (body.items && body.items.length > 0) {
+                body.items.forEach(function(item) {
+                    if (item.snippet && item.snippet.resourceId.kind === 'youtube#video') {
+                        vids.push(item.snippet.resourceId.videoId)
+                    } 
+                });
+                resolve(vids)
+            }
+        }
+    }) 
+})
+
 const util = {
     validateURL(url) {
-        return regex.test(url)
+        return videoRegex.test(url) || playlistRegex.test(url)
     },
-    getVideoId(url) {
-        const caps = regex.exec(url)
-        if (caps && caps.length >= 2)
-            return caps[1   ]
-        return ""
-    } 
+    getVideoIds: url => new Promise((resolve, reject) => {
+        getPlaylists()
+        if (videoRegex.test(url)) {
+            const caps = videoRegex.exec(url)
+            if (caps && caps.length >= 2)
+                resolve([caps[1]])
+            reject() 
+        } else if (playlistRegex.test(url)) { 
+            const caps = playlistRegex.exec(url)
+            if (caps && caps.length >= 2) {
+                return getPlaylists(caps[1]).then(
+                    (vids) => {
+                        resolve(vids)
+                    }
+                    ) 
+            }
+            reject()
+        } else {         
+            reject()
+        }          
+    })
 }
+
+
 module.exports = util

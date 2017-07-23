@@ -8,7 +8,6 @@ function mostSquare(num) {
         x: smaller + (num % smaller)   
     }
 }
-
 const util = {
 
 
