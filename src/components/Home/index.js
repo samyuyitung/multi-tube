@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './Home.css';
 
 import VideoList from '../VideoList';
+let util = require('../../Util/YoutubeUtil')
 
 class Home extends Component {
   constructor(props) {
@@ -31,7 +32,13 @@ class Home extends Component {
   }
 
   startButtonPressed() {
-    this.props.history.push('about')
+    if (this.state.videolist.length > 0) {
+      var query = "?videos="
+      this.state.videolist.forEach((item)=> {
+        query += `${util.getVideoId(item)},`
+      })
+      this.props.history.push(`watch${query}`)
+    }
   }
 }
 

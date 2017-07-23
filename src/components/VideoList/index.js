@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 
-import List from 'react-items-list'
+import List from './component.js';
+import util from '../../Util/YoutubeUtil';
+
 
 class VideoList extends Component {  
     render() {
