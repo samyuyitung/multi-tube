@@ -20,7 +20,7 @@ class Home extends Component {
       <div className="Home">
         <h1>MultiTube </h1>
         <VideoList items={this.state.videolist} listHandler={this.onListChange}/>
-        <button onClick={this.startButtonPressed}> Click me!</button>
+        <button onClick={this.startButtonPressed}> Play videoos!</button>
       </div>
     );
   }
@@ -40,14 +40,15 @@ class Home extends Component {
         util.getVideoIds(item).then(
           (items) => {
             ids = ids.concat(items)
-            query += ids.join(',')
-            this.resolveWrapper(--resolveCount, query)
+            this.resolveWrapper(--resolveCount, ids)
           }, err => {})
       })
     }
   }
-  resolveWrapper(count, query) {
-    if (count === 0) {
+  resolveWrapper(count, ids) {
+    if (count === 0) {   
+            var query = "?videos="         
+      query += ids.join(',')
           this.props.history.push(`watch${query}`)
     }
   }

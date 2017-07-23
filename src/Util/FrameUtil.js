@@ -1,11 +1,11 @@
 const regex = new RegExp("^https:\\/\\/www\\.youtube\\.com\\/watch\\?v=(\\w+)$")
 
 function mostSquare(num) {
-    let smaller = Math.floor(Math.sqrt(num))
+    let upper = Math.ceil(Math.sqrt(num))
 
     return {
-        y: smaller,
-        x: (num / smaller)   
+        y: upper,
+        x: Math.ceil(num / upper)    
     }
 }
 const util = {
@@ -18,7 +18,6 @@ const util = {
         const browserWidth = window.innerWidth
         
         const dimens = mostSquare(count)
-        console.log(dimens)
         return {
             width: browserWidth / dimens.x,
             height: browserHeight / dimens.y 
